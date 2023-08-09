@@ -14,4 +14,6 @@ btnEntrar.addEventListener('click', () => {
     // 3° Validar se o email e senha estão corretos
     // 4° Caso esteja incorreto, mandar mensagem de usuario ou senha invalida.
     // 5° Caso esteja correto, ir para tela de cadastro de usuario
+
+    window.open('cadastro-usuario.html', '_self')
 });
