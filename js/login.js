@@ -23,9 +23,6 @@ btnEntrar.addEventListener('click', () => {
 
     // Aqui precisamos enviar esse email e senha ao backend para saber se o usuario pode acessar o sistema.
     autenticar(userEmail, userSenha);
-
-    // 5° Caso esteja correto, ir para tela de cadastro de usuario
-    // window.open('cadastro-usuario.html', '_self')
 });
 
 
