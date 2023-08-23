@@ -24,3 +24,8 @@ table.table>thead>tr th {
 button.btn{
     min-width: 80px;
 }
+
+/* Override */
+div.modal-dialog{
+    max-width: 700px;
+}
