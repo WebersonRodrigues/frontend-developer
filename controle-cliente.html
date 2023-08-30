@@ -46,8 +46,8 @@
         </ul>
 
         <ul class="navbar-nav">
-          <li onclick="sair()" class="nav-item">
-            <a class="nav-link" href="/login.html">Sair</a>
+          <li onClick="sairSistema()" class="nav-item">
+            <a class="nav-link" href="#">Sair</a>
           </li>
         </ul>
       </div>
@@ -142,8 +142,8 @@
                     <input type="text" class="form-control" id="cpf">
                   </div>
                   <div class="col-sm-3">
-                    <label for="dataCadastro" class="form-label">DataCadastro</label>
-                    <input type="date" class="form-control" id="dataCadastro">
+                    <label for="dataCadastro" class="form-label">Data de cadastro</label>
+                    <input type="date" class="form-control" id="dataCadastro" disabled>
                   </div>
                 </div>
 
@@ -159,6 +159,7 @@
         </div>
       </div>
     </div>
+    <script src="./js/base.js"></script>
     <script src="./js/model/Cliente.js"></script>
     <script src="./js/controle-cliente.js"></script>
   </body>

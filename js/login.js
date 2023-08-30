@@ -17,7 +17,12 @@ btnEntrar.addEventListener('click', () => {
 
     if(!userEmail || !userSenha){
         // 4° Caso esteja incorreto, mandar mensagem de usuario ou senha invalida.
-        alert("Os campos de e-mail e senha são obrigatórios!");
+        Swal.fire({
+            icon: 'error',
+            text: 'Os campos de e-mail e senha são obrigatórios!'
+        });
+
+        // alert("Os campos de e-mail e senha são obrigatórios!");
         return;
     }
 
@@ -45,20 +50,26 @@ function autenticar(email, senha){
 
        }else{
 
-        alert("Usuario autenticado com sucesso!");
-
+        
         salvarToken(response.token);
         salvarUsuario(response.usuario);
         
-        window.open('cliente.html', '_self');
+        // Aqui vou esconder a tela de login e carregar o loading..
+        mostrarLoading();
+
+        setTimeout(() =>{
+            window.open('controle-cliente.html', '_self');
+        }, 5000)
+        
        }
     });
 }
 
-function salvarToken(token){
-    localStorage.setItem('token', token)
-}
 
-function salvarUsuario(usuario){
-    localStorage.setItem('usuario', JSON.stringify(usuario));
+function mostrarLoading(){
+    const divLoading = document.querySelector('#loading');
+    divLoading.style.display='block';
+
+    const divBoxlogin = document.querySelector('div.caixa-login')
+    divBoxlogin.style.display = 'none';
 }

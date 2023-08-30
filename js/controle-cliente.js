@@ -37,8 +37,14 @@ btnSalvar.addEventListener('click', () => {
         return;
     }
 
-    // 3° Enviar o cadastro
-    adicionarClienteBackEnd(cliente);
+    // if(modoEdicao){
+    //     atualizarClienteBackEnd(cliente);
+    // }else{
+    //     adicionarClienteBackEnd(cliente);
+    // }
+
+    (modoEdicao) ? atualizarClienteBackEnd(cliente) : adicionarClienteBackEnd(cliente);
+
 });
 
 btnCancelar.addEventListener('click', () => {
@@ -53,14 +59,19 @@ function obterClienteDoModal(){
         nome: formModal.nome.value,
         cpfOuCnpj: formModal.cpf.value,
         telefone: formModal.telefone.value,
-        // dataCadastro: formModal.dataCadastro.value,
+        dataCadastro: (formModal.dataCadastro.value) 
+                ? new Date(formModal.dataCadastro.value).toISOString()
+                : new Date().toISOString()
     });
 }
-
+ 
 function obterClientes() {
 
     fetch(URL, {
-        method: 'GET'
+        method: 'GET',
+        headers :{
+            'Authorization': obterToken()
+        }
     })
         .then(response => response.json())
         .then(clientes => {
@@ -102,7 +113,13 @@ function limparModalCliente(){
 }
 
 function excluirCliente(id){
-    alert('Aqui vou excluir o cliente ' + id);
+
+    let cliente = listaClientes.find(c => c.id == id);
+
+    if(confirm("Deseja realmente excluir o cliente " + cliente.nome)){
+        excluirClienteBackEnd(cliente);
+    }
+    
 }
 
 function criarLinhaNaTabela(cliente) {
@@ -124,7 +141,7 @@ function criarLinhaNaTabela(cliente) {
     tdNome.textContent = cliente.nome;
     tdCPF.textContent = cliente.cpfOuCnpj;
     tdEmail.textContent = cliente.email;
-    tdDataCadastro.textContent = cliente.dataCadastro;
+    tdDataCadastro.textContent = new Date(cliente.dataCadastro).toLocaleDateString();
     tdTelefone.textContent = cliente.telefone;
 
     tdAcoes.innerHTML = `<button onclick="editarCliente(${cliente.id})" class="btn btn-outline-primary btn-sm mr-3">
@@ -167,7 +184,7 @@ function adicionarClienteBackEnd(cliente){
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
-            'Aurhorization': "token"
+            'Authorization': obterToken()
         },
         body : JSON.stringify(cliente)
     })
@@ -184,6 +201,57 @@ function adicionarClienteBackEnd(cliente){
     .catch(error => {
         console.log(error)
     })
+}
+
+
+function atualizarClienteBackEnd(cliente){
+
+    fetch(`${URL}/${cliente.id}`, {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': obterToken()
+        },
+        body : JSON.stringify(cliente)
+    })
+    .then(response => response.json())
+    .then(() => {
+        atualizarClienteNaLista(cliente, false);
+        modalCliente.hide();
+    })
+    .catch(error => {
+        console.log(error)
+    })
+}
+
+function excluirClienteBackEnd(cliente){
+
+    fetch(`${URL}/${cliente.id}`, {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': obterToken()
+        }
+    })
+    .then(response => response.json())
+    .then(() => {
+        atualizarClienteNaLista(cliente, true);
+        modalCliente.hide();
+    })
+    .catch(error => {
+        console.log(error)
+    })
+}
+
+function atualizarClienteNaLista(cliente, removerCliente){
+
+    let indice = listaClientes.findIndex((c) => c.id == cliente.id);
+
+    (removerCliente) 
+        ? listaClientes.splice(indice, 1)
+        : listaClientes.splice(indice, 1, cliente);
+
+    popularTabela(listaClientes);
 }
 
 obterClientes();
