@@ -197,6 +197,13 @@ function adicionarClienteBackEnd(cliente){
         popularTabela(listaClientes)
 
         modalCliente.hide();
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Cliente cadastrado com sucesso!',
+            showConfirmButton: false,
+            timer: 2500
+        });
     })
     .catch(error => {
         console.log(error)
@@ -218,6 +225,14 @@ function atualizarClienteBackEnd(cliente){
     .then(() => {
         atualizarClienteNaLista(cliente, false);
         modalCliente.hide();
+
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Cliente atualizado com sucesso!',
+            showConfirmButton: false,
+            timer: 2500
+        });
     })
     .catch(error => {
         console.log(error)
@@ -237,6 +252,13 @@ function excluirClienteBackEnd(cliente){
     .then(() => {
         atualizarClienteNaLista(cliente, true);
         modalCliente.hide();
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Cliente excluido com sucesso!',
+            showConfirmButton: false,
+            timer: 2500
+        });
     })
     .catch(error => {
         console.log(error)
