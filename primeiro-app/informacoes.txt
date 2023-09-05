@@ -1,0 +1,15 @@
+Criando um projeto react
+
+1° Criar a base do projeto
+    npx create-react-app <nome-projeto>
+
+2°  Limpar a base do projeto
+    public
+        Remover os 4 arquivos desnecessários
+        Deve ficar somente o favicon.ico e index.html
+        Limpar o nosso html
+    src
+        Remover os 6 arquivos desnecessários
+        deve ficar somente App.js e index.js
+        limpar nosso index.js
+
