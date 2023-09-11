@@ -2,9 +2,11 @@ import { useState } from 'react';
 import Swal from 'sweetalert2'
 import './index.css';
 
+import usuarioService from '../../service/usuario-service';
+
 function Login (){
-    const [email, setEmail] = useState('nutella');
-    const [senha, setSenha] = useState('');
+    const [email, setEmail] = useState('admin@admin.com');
+    const [senha, setSenha] = useState('123456');
 
     const logar = () => {
   
@@ -15,13 +17,25 @@ function Login (){
             });
             return;
         }     
+        // Me comunicar com a api e fazer a autenticação...
+
+        usuarioService.autenticar(email, senha)
+        .then(response => {
+            usuarioService.salvarToken(response.data.token);
+            usuarioService.salvarUsuario(response.data.usuario);
+            
+            window.location='/';
+        })
+        .catch(erro =>{
+            console.log(erro)
+        })
     };
 
     return (
-        <div class="caixa-login">
+        <div className="caixa-login">
 
             {/* Titulo da tela de login  */}
-            <div class="titulo-login">
+            <div className="titulo-login">
                 <h1>Login</h1>
             </div>
 
