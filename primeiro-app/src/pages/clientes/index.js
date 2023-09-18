@@ -1,14 +1,18 @@
 
 import './index.css';
 import clienteService from "../../service/cliente-service"
+import Swal from 'sweetalert2'
 // HOOKs
 import { useEffect, useState } from 'react';
+import Cliente from '../../models/Cliente';
 
-function Cliente (){
+function ClientePage (){
   
   const [clientes, setClientes] = useState([]);
+  const [modoEdicao, setModoEdicao] = useState(false);
+  const [cliente, setCliente] = useState(new Cliente());
 
-
+ 
   useEffect(() =>{
 
     clienteService.obter()
@@ -22,11 +26,66 @@ function Cliente (){
   },[]);
 
   const editar = (id) => {
-    alert(id)
+    setModoEdicao(true);
   }
 
   const excluir = (id) => {
     alert(id)
+  }
+
+  const adicionar = () =>{
+    setModoEdicao(false);
+  };
+
+  const salvar = () => {
+
+    if(!cliente.nome || !cliente.cpfOuCnpj || !cliente.email){
+      Swal.fire({
+        icon: 'error',
+        text: 'E-mail e CPF são obrigatórios.'
+      });
+      return;
+    }
+
+    (modoEdicao) ? atualizarClienteBackend(cliente) : adicionarClienteBackend(cliente);
+  };
+
+  const adicionarClienteBackend = (cliente) => {
+    clienteService.adicionar(cliente)
+    .then(response => {
+
+      setClientes(lista => [...lista, new Cliente(response.data)]);
+
+      limparCliente();
+
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Cliente cadastrado com sucesso!',
+        showConfirmButton: false,
+        timer: 2500
+      });
+
+    })
+    .catch(erro => {
+
+    })
+  }
+
+  const atualizarClienteBackend =(cliente) => {
+
+  }
+
+  const limparCliente = () =>{
+    setCliente({
+      ...cliente,
+      id: '',
+      nome: '',
+      cpfOuCnpj: '',
+      telefone: '',
+      dataCadastro: '',
+      email:''
+    });
   }
 
   return (
@@ -46,6 +105,8 @@ function Cliente (){
             <button 
               id="btn-adicionar" 
               className="btn btn-primary btn-sm"
+              data-bs-toggle="modal" data-bs-target="#modal-cliente"
+              onClick={adicionar}
             >
               Adicionar
             </button>
@@ -76,9 +137,13 @@ function Cliente (){
                     <td>{cliente.cpfOuCnpj}</td>
                     <td>{cliente.email}</td>
                     <td>{cliente.telefone}</td>
-                    <td>{cliente.dataCadastro}</td>
+                    <td>{new Date(cliente.dataCadastro).toLocaleDateString()}</td>
                     <td>
-                      <button onClick={editar} class="btn btn-outline-primary btn-sm mr-3">
+                      <button 
+                      onClick={editar} 
+                      class="btn btn-outline-primary btn-sm mr-3"
+                      data-bs-toggle="modal" 
+                      data-bs-target="#modal-cliente">
                           Editar
                       </button>
                       <button onClick={excluir} class="btn btn-outline-primary btn-sm mr-3">
@@ -102,7 +167,7 @@ function Cliente (){
   
                 {/* <!-- Modal Header --> */}
                 <div className="modal-header">
-                  <h4 className="modal-title">Adicionar cliente</h4>
+                  <h4 className="modal-title">{modoEdicao ? "Editar cliente" : "Adicionar cliente"}</h4>
                   <button
                     type="button"
                     className="btn-close"
@@ -116,31 +181,50 @@ function Cliente (){
                   <div className="row">
                     <div className="col-sm-2">
                       <label for="id" className="form-label">Id</label>
-                      <input disabled type="text" className="form-control" id="id" />
-                    </div>
+                      <input 
+                      disabled 
+                      type="text" 
+                      className="form-control" 
+                      id="id"
+                      value={cliente.id}
+                      // Aqui estamos alterando so a propriedade ID.
+                      onChange={(e) => setCliente({ ...cliente, id: e.target.value })}
+                      />
+                    </div> 
   
                     <div className="col-sm-10">
                       <label for="nome" className="form-label">Nome</label>
-                      <input type="text" className="form-control" id="nome" />
+                      <input type="text" className="form-control" id="nome" 
+                      value={cliente.nome}
+                      onChange={(e) => setCliente({ ...cliente, nome: e.target.value })}
+                      />
                     </div>
                   </div>
   
                   <div className="row">
                     <div className="col-sm-4">
                       <label for="email" className="form-label">E-mail</label>
-                      <input type="text" className="form-control" id="email" />
+                      <input type="text" className="form-control" id="email" 
+                      value={cliente.email}
+                       onChange={(e) => setCliente({ ...cliente, email: e.target.value })} />
                     </div>
                     <div className="col-sm-2">
                       <label for="telefone" className="form-label">Telefone</label>
-                      <input type="text" className="form-control" id="telefone" />
+                      <input type="text" className="form-control" id="telefone" 
+                      value={cliente.telefone}
+                       onChange={(e) => setCliente({ ...cliente, telefone: e.target.value })}/>
                     </div>
                     <div className="col-sm-3">
                       <label for="cpf" className="form-label">CPF</label>
-                      <input type="text" className="form-control" id="cpf" />
+                      <input type="text" className="form-control" id="cpf" 
+                      value={cliente.cpfOuCnpj}
+                       onChange={(e) => setCliente({ ...cliente, cpfOuCnpj: e.target.value })}/>
                     </div>
                     <div className="col-sm-3">
                       <label for="dataCadastro" className="form-label">Data de cadastro</label>
-                      <input type="date" className="form-control" id="dataCadastro" disabled />
+                      <input type="date" className="form-control" id="dataCadastro" disabled 
+                       value={cliente.dataCadastro}
+                       onChange={(e) => setCliente({ ...cliente, dataCadastro: e.target.value })}/>
                     </div>
                   </div>
   
@@ -148,8 +232,8 @@ function Cliente (){
   
                 {/* <!-- Modal footer --> */}
                 <div className="modal-footer">
-                  <button id="btn-salvar" className="btn btn-primary btn-sm">Salvar</button>
-                  <button id="btn-cancelar" className="btn btn-light btn-sm">Cancelar</button>
+                  <button id="btn-salvar" className="btn btn-primary btn-sm" onClick={salvar} >Salvar</button>
+                  <button id="btn-cancelar" className="btn btn-light btn-sm" data-bs-dismiss="modal">Cancelar</button>
                 </div>
               </div>
             </div>
@@ -159,4 +243,4 @@ function Cliente (){
     )
 }
 
-export default Cliente;
+export default ClientePage;
