@@ -1,8 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 
+/* Adobe color
+    https://materialui.co/colors/
+*/
 :root {
-    --cor-primaria: #F4511E;
-    --cor-secundaria:#FF7043;
+    /* --cor-primaria:  #F4511E; */
+    /* --cor-secundaria:#FF7043; */
+    --cor-primaria: #304FFE;
+    --cor-secundaria: #536DFE;
 }
 
 /* CSS RESET */
@@ -25,6 +30,11 @@ button.btn{
     min-width: 80px;
 }
 
+.espacar {
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
 /* Override */
 /* div.modal-dialog{
     max-width: 700px;
@@ -33,4 +43,26 @@ button.btn{
 
 #loading{
     display: none;
+}
+
+button.btn-primary{
+    --bs-btn-bg: var(--cor-primaria);
+    --bs-btn-border-color: var(--cor-primaria);
+    --bs-btn-hover-bg: var(--cor-secundaria);
+    --bs-btn-hover-border-color: var(--cor-secundaria);
+    --bs-btn-active-bg: var(--cor-secundaria);
+    --bs-btn-active-border-color: var(--cor-secundaria);
+    --bs-btn-disabled-bg: var(--cor-primaria);
+    --bs-btn-disabled-border-color: var(--cor-primaria);
+}
+
+button.btn-outline-primary {
+    --bs-btn-color: var(--cor-primaria);
+    --bs-btn-border-color: var(--cor-primaria);
+    --bs-btn-hover-bg: var(--cor-primaria);
+    --bs-btn-hover-border-color: var(--cor-primaria);
+    --bs-btn-active-bg: var(--cor-primaria);
+    --bs-btn-active-border-color: var(--cor-primaria);
+    --bs-btn-disabled-color: var(--cor-primaria);
+    --bs-btn-disabled-border-color: var(--cor-primaria);
 }
