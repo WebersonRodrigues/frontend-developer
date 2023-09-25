@@ -5,6 +5,7 @@ import Swal from 'sweetalert2'
 // HOOKs
 import { useEffect, useState } from 'react';
 import Cliente from '../../models/Cliente';
+import { FaPencilAlt, FaTrashAlt, FaPlus } from 'react-icons/fa'
 
 function ClientePage() {
 
@@ -164,7 +165,7 @@ function ClientePage() {
             data-bs-toggle="modal" data-bs-target="#modal-cliente"
             onClick={adicionar}
           >
-            Adicionar
+           <FaPlus/>  Adicionar
           </button>
         </div>
       </div>
@@ -202,13 +203,13 @@ function ClientePage() {
                       class="btn btn-outline-primary btn-sm mr-3"
                       data-bs-toggle="modal"
                       data-bs-target="#modal-cliente">
-                      Editar
+                      <FaPencilAlt /> Editar
                     </button>
                     <button
                       id={cliente.id}
                       onClick={excluir} 
                       class="btn btn-outline-primary btn-sm espacar">
-                      Excluir
+                      <FaTrashAlt /> Excluir
                     </button>
                   </td>
                 </tr>
